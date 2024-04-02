@@ -34,6 +34,7 @@ jobs:
       with:
         package-name: ip
         spack-compiler: gcc@11
+        cache-secret: ${{ secrets.SPACKBUILDCACHE }}
 
   # This job validates the Spack recipe by making sure each cmake build option is represented
   recipe-check:
