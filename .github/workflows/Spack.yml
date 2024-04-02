@@ -33,7 +33,7 @@ jobs:
       uses: AlexanderRichert-NOAA/spack-package-test@v1.6
       with:
         package-name: ip
-        package-variants: precision=4,d,8 +shared
+        package-variants: ${{ matrix.variants }}
         spack-compiler: gcc@11
         cache-secret: ${{ secrets.SPACKBUILDCACHE }}
 
