@@ -30,7 +30,7 @@ jobs:
     steps:
     
     - name: "Test with Spack"
-      uses: AlexanderRichert-NOAA/spack-package-test@v1.1
+      uses: AlexanderRichert-NOAA/spack-package-test@v1.2
       with:
         package-name: ip
         dependents-to-test: grib-util
