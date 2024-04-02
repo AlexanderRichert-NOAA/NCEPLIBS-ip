@@ -30,10 +30,9 @@ jobs:
     steps:
     
     - name: "Test with Spack"
-      uses: AlexanderRichert-NOAA/spack-package-test@v1.4
+      uses: AlexanderRichert-NOAA/spack-package-test@v1.5
       with:
         package-name: ip
-        dependents-to-test: grib-util
         spack-compiler: gcc@11
 
   # This job validates the Spack recipe by making sure each cmake build option is represented
