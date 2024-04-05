@@ -30,13 +30,14 @@ jobs:
     steps:
     
     - name: "Test with Spack"
-      uses: AlexanderRichert-NOAA/spack-package-test@v1.8
+      uses: AlexanderRichert-NOAA/spack-package-test@v1.9
       with:
         package-name: ip
         package-variants: ${{ matrix.variants }}
         spack-compiler: gcc@11
         cache-secret: ${{ secrets.SPACKBUILDCACHE }}
         upload-artifacts: always
+        custom-recipe: spack/package.py
 
   # This job validates the Spack recipe by making sure each cmake build option is represented
   recipe-check:
