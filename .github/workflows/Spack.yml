@@ -30,7 +30,7 @@ jobs:
     steps:
     
     - name: "Test with Spack"
-      uses: NOAA-EMC/spack-package-test@v2.0
+      uses: NOAA-EMC/spack-package-test@v2.1
       with:
         package-name: ip
         package-variants: ${{ matrix.variants }}
