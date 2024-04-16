@@ -26,6 +26,9 @@ jobs:
         os: ["ubuntu-latest"]
         variants: ["+openmp +shared +pic precision=d", "+openmp ~shared ~pic precision=4", "~openmp ~shared +pic precision=8"]
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+      packages: write
 
     steps:
     
