@@ -65,7 +65,7 @@ class Ip(CMakePackage):
     depends_on("sp precision=4", when="@4.1:4 precision=4")
     depends_on("sp precision=d", when="@4.1:4 precision=d")
     depends_on("sp precision=8", when="@4.1:4 precision=8")
-    depends_on("bacio")
+    depends_on("sp")
 #    depends_on("lapack", when="@develop")
 
     def cmake_args(self):
