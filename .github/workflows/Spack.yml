@@ -8,7 +8,8 @@
 # Alex Richert, Sep 2023
 name: Spack
 on:
-  push
+  push:
+    branches: [develop, spackcitest]
   pull_request_target:
     branches: [develop]
 
