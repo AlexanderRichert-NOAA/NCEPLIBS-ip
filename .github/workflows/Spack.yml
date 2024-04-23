@@ -33,11 +33,13 @@ jobs:
     
     - name: "Test with Spack"
       uses: NOAA-EMC/ci-test-spack-package@develop
+      env:
+        secret: ${{ secrets.SPACKBUILDCACHE }}
       with:
         package-name: ip
         package-variants: ${{ matrix.variants }}
         spack-compiler: gcc@11
-        cache-secret: ${{ secrets.SPACK2 }}
+        cache-secret: ${{ env.secret }}
         upload-artifacts: always
         custom-recipe: spack/package.py
         spack-ref: 6f7eb3750cc100dc9cd6c02730d16ff8eb0c2d9e
