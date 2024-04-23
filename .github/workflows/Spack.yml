@@ -27,18 +27,17 @@ jobs:
         variants: ["+openmp +shared +pic precision=d", "+openmp ~shared ~pic precision=4", "~openmp ~shared +pic precision=8"]
     runs-on: ${{ matrix.os }}
     permissions:
-      contents: read
       packages: write
 
     steps:
     
     - name: "Test with Spack"
-      uses: NOAA-EMC/spack-package-test@develop
+      uses: NOAA-EMC/ci-test-spack-package@develop
       with:
         package-name: ip
         package-variants: ${{ matrix.variants }}
         spack-compiler: gcc@11
-        cache-secret: ${{ secrets.SPACKBUILDCACHE }}
+        cache-secret: ${{ secrets.SPACK2 }}
         upload-artifacts: always
         custom-recipe: spack/package.py
         spack-ref: 6f7eb3750cc100dc9cd6c02730d16ff8eb0c2d9e
