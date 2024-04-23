@@ -11,9 +11,12 @@ on:
   push:
     branches:
     - develop
-  pull_request_target:
+  pull_request:
     branches:
     - develop
+  pull_request_target:
+    branches: [develop]
+    types: [assigned, opened, synchronize, reopened]
 
 env:
   ACTIONS_STEP_DEBUG: true
