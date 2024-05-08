@@ -143,6 +143,7 @@ CONTAINS
     real(kd) :: rlat1, rlon1, rlat0, rlat2, rlon2, nbd, ebd
     integer :: iscale
     integer :: i_offset_odd, i_offset_even, j_offset
+    real(kd) :: hs, hs2, slat1, slat2, slatr, clon1, clon2, clat1, clat2, clatr, clonr, rlonr, rlatr
 
     associate(igdtmpl => g2_desc%gdt_tmpl, igdtlen => g2_desc%gdt_len)
 
@@ -157,28 +158,46 @@ CONTAINS
 
       RLAT1=FLOAT(IGDTMPL(12))/FLOAT(ISCALE)
       RLON1=FLOAT(IGDTMPL(13))/FLOAT(ISCALE)
-      RLAT0=FLOAT(IGDTMPL(20))/FLOAT(ISCALE)
-      RLAT0=RLAT0+90.0_KD
+      RLAT0=FLOAT(IGDTMPL(15))/FLOAT(ISCALE)
+!      RLAT0=RLAT0+90.0_KD
 
-      self%RLON0=FLOAT(IGDTMPL(21))/FLOAT(ISCALE)
+      self%RLON0=FLOAT(IGDTMPL(16))/FLOAT(ISCALE)
 
-      RLAT2=FLOAT(IGDTMPL(15))/FLOAT(ISCALE)
-      RLON2=FLOAT(IGDTMPL(16))/FLOAT(ISCALE)
+      RLAT2=FLOAT(IGDTMPL(20))/FLOAT(ISCALE)
+      RLON2=FLOAT(IGDTMPL(21))/FLOAT(ISCALE)
 
       self%IROT=MOD(IGDTMPL(14)/8,2)
       self%IM=IGDTMPL(8)
       self%JM=IGDTMPL(9)
 
+      SLAT1=SIN(RLAT1/DPR)
+      CLAT1=COS(RLAT1/DPR)
+
       self%SLAT0=SIN(RLAT0/DPR)
       self%CLAT0=COS(RLAT0/DPR)
 
-      self%WBD=RLON1
+      HS=SIGN(1._KD,MOD(RLON1-self%RLON0+180+3600,360._KD)-180)
+
+      CLON1=COS((RLON1-self%RLON0)/DPR)
+      SLATR=self%CLAT0*SLAT1-self%SLAT0*CLAT1*CLON1
+      CLATR=SQRT(1-SLATR**2)
+      CLONR=(self%CLAT0*CLAT1*CLON1+self%SLAT0*SLAT1)/CLATR
+      RLATR=DPR*ASIN(SLATR)
+      RLONR=HS*DPR*ACOS(CLONR)
+
+      self%WBD=RLONR
       IF (self%WBD > 180.0) self%WBD = self%WBD - 360.0
-      self%SBD=RLAT1
+      self%SBD=RLATR
 
-      NBD=RLAT2
-      EBD=RLON2
-
+      SLAT2=SIN(RLAT2/DPR)
+      CLAT2=COS(RLAT2/DPR)
+      HS2=SIGN(1._KD,MOD(RLON2-self%RLON0+180+3600,360._KD)-180)
+      CLON2=COS((RLON2-self%RLON0)/DPR)
+      SLATR=self%CLAT0*SLAT2-self%SLAT0*CLAT2*CLON2
+      CLATR=SQRT(1-SLATR**2)
+      CLONR=(self%CLAT0*CLAT2*CLON2+self%SLAT0*SLAT2)/CLATR
+      NBD=DPR*ASIN(SLATR)
+      EBD=HS2*DPR*ACOS(CLONR)
       self%DLATS=(NBD-self%SBD)/FLOAT(self%JM-1)
       self%DLONS=(EBD-self%WBD)/FLOAT(self%IM-1)
 
