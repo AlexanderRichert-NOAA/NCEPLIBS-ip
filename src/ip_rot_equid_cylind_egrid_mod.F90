@@ -160,9 +160,10 @@ contains
   !>
   !> @author Kyle Gerheiser
   !> @date July 2021
-  subroutine init_grib2(self, g2_desc)
+  subroutine init_grib2(self, g2_desc, ncep_post)
     class(ip_rot_equid_cylind_egrid), intent(inout) :: self
     type(grib2_descriptor), intent(in) :: g2_desc
+    logical(1), optional, intent(in) :: ncep_post
 
     integer :: iscale, iscan
     real(kd) :: rlat0

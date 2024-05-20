@@ -382,7 +382,7 @@ contains
   subroutine ipolatev_grib2(ip,ipopt,igdtnumi,igdtmpli,igdtleni, &
        igdtnumo,igdtmplo,igdtleno, &
        mi,mo,km,ibi,li,ui,vi, &
-       no,rlat,rlon,crot,srot,ibo,lo,uo,vo,iret) bind(c)
+       no,rlat,rlon,crot,srot,ibo,lo,uo,vo,iret,ncep_post) bind(c)
     USE ISO_C_BINDING, ONLY: C_INT, C_FLOAT, C_DOUBLE, C_BOOL, C_LONG
 #if (LSIZE==8)
     INTEGER(C_LONG),               INTENT(IN   ) :: IP, IPOPT(20), IBI(KM)
@@ -404,6 +404,8 @@ contains
     !
     LOGICAL(C_BOOL),             INTENT(IN   ) :: LI(MI,KM)
     LOGICAL(C_BOOL),             INTENT(  OUT) :: LO(MO,KM)
+    LOGICAL(C_BOOL), OPTIONAL,   INTENT(IN   ) :: NCEP_POST
+    LOGICAL(C_BOOL)                  :: NCEP_POST_VALUE
     !
 #if (LSIZE==4)
     REAL(C_FLOAT),                  INTENT(IN   ) :: UI(MI,KM),VI(MI,KM)
@@ -424,8 +426,14 @@ contains
     desc_in = init_descriptor(igdtnumi, igdtleni, igdtmpli)
     desc_out = init_descriptor(igdtnumo, igdtleno, igdtmplo)
 
-    call init_grid(grid_in, desc_in)
-    call init_grid(grid_out, desc_out)
+    if (.not.present(ncep_post)) then
+      ncep_post_value=.false.
+    else
+      ncep_post_value=ncep_post
+    endif
+
+    call init_grid(grid_in, desc_in, ncep_post=ncep_post_value)
+    call init_grid(grid_out, desc_out, ncep_post=ncep_post_value)
 
     CALL ipolatev_grid(ip,IPOPT,grid_in,grid_out, &
          MI,MO,KM,IBI,LI,UI,VI,&
@@ -832,7 +840,7 @@ contains
   subroutine ipolatev_grib2_single_field(ip,ipopt,igdtnumi,igdtmpli,igdtleni, &
        igdtnumo,igdtmplo,igdtleno, &
        mi,mo,km,ibi,li,ui,vi, &
-       no,rlat,rlon,crot,srot,ibo,lo,uo,vo,iret) bind(c)
+       no,rlat,rlon,crot,srot,ibo,lo,uo,vo,iret,ncep_post) bind(c)
     USE ISO_C_BINDING, ONLY: C_INT, C_FLOAT, C_DOUBLE, C_BOOL, C_LONG
 #if (LSIZE==8)
     INTEGER(C_LONG),               INTENT(IN   ) :: IP, IPOPT(20), IBI
@@ -854,6 +862,8 @@ contains
     !
     LOGICAL(C_BOOL),             INTENT(IN   ) :: LI(MI)
     LOGICAL(C_BOOL),             INTENT(  OUT) :: LO(MO)
+    LOGICAL(C_BOOL), OPTIONAL,   INTENT(IN   ) :: NCEP_POST
+    LOGICAL(C_BOOL)                            :: NCEP_POST_VALUE
     !
 #if (LSIZE==4)
     REAL(C_FLOAT),                  INTENT(IN   ) :: UI(MI),VI(MI)
@@ -879,8 +889,14 @@ contains
     desc_in = init_descriptor(igdtnumi, igdtleni, igdtmpli)
     desc_out = init_descriptor(igdtnumo, igdtleno, igdtmplo)
 
-    call init_grid(grid_in, desc_in)
-    call init_grid(grid_out, desc_out)
+    if (.not.present(ncep_post)) then
+      ncep_post_value=.false.
+    else
+      ncep_post_value=ncep_post
+    endif
+
+    call init_grid(grid_in, desc_in, ncep_post=ncep_post_value)
+    call init_grid(grid_out, desc_out, ncep_post=ncep_post_value)
 
     CALL ipolatev_grid(ip,IPOPT,grid_in,grid_out, &
          MI,MO,KM,[IBI],LI,UI,VI,&

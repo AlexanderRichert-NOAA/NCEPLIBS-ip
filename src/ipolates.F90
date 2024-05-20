@@ -587,7 +587,7 @@ contains
   SUBROUTINE IPOLATES_grib2(IP,IPOPT,IGDTNUMI,IGDTMPLI,IGDTLENI, &
        IGDTNUMO,IGDTMPLO,IGDTLENO, &
        MI,MO,KM,IBI,LI,GI, &
-       NO,RLAT,RLON,IBO,LO,GO,IRET) bind(C)
+       NO,RLAT,RLON,IBO,LO,GO,IRET,NCEP_POST) bind(C)
     USE ISO_C_BINDING, ONLY: C_INT, C_FLOAT, C_DOUBLE, C_BOOL, C_LONG
 #if (LSIZE==8)
     INTEGER(C_LONG),        INTENT(IN   )     :: IP, IPOPT(20), KM, MI, MO
@@ -611,6 +611,8 @@ contains
     !
     LOGICAL(C_BOOL),      INTENT(IN   )     :: LI(MI,KM)
     LOGICAL(C_BOOL),      INTENT(  OUT)     :: LO(MO,KM)
+    LOGICAL(C_BOOL),OPTIONAL :: NCEP_POST
+    LOGICAL(C_BOOL) :: NCEP_POST_VALUE
     !
 #if (LSIZE==4)
     REAL(C_FLOAT),       INTENT(IN   ) :: GI(MI,KM)
@@ -628,8 +630,14 @@ contains
     desc_in = init_descriptor(igdtnumi, igdtleni, igdtmpli)
     desc_out = init_descriptor(igdtnumo, igdtleno, igdtmplo)
 
-    call init_grid(grid_in, desc_in)
-    call init_grid(grid_out, desc_out)
+    if (.not.present(ncep_post)) then
+      ncep_post_value=.false.
+    else
+      ncep_post_value=ncep_post
+    endif
+
+    call init_grid(grid_in, desc_in, ncep_post=ncep_post_value)
+    call init_grid(grid_out, desc_out, ncep_post=ncep_post_value)
 
     CALL ipolates_grid(ip,IPOPT,grid_in,grid_out,MI,MO,KM,IBI,LI,GI,NO,RLAT,RLON,IBO,LO,GO,IRET)
 
@@ -808,7 +816,7 @@ contains
   SUBROUTINE IPOLATES_GRIB2_SINGLE_FIELD(IP,IPOPT,IGDTNUMI,IGDTMPLI,IGDTLENI, &
        IGDTNUMO,IGDTMPLO,IGDTLENO, &
        MI,MO,KM,IBI,LI,GI, &
-       NO,RLAT,RLON,IBO,LO,GO,IRET) bind(C)
+       NO,RLAT,RLON,IBO,LO,GO,IRET,NCEP_POST) bind(C)
     USE ISO_C_BINDING, ONLY: C_INT, C_FLOAT, C_DOUBLE, C_BOOL, C_LONG
 #if (LSIZE==8)
     INTEGER(C_LONG),        INTENT(IN   )     :: IP, IPOPT(20), KM, MI, MO
@@ -830,8 +838,10 @@ contains
     INTEGER(C_INT),        INTENT(  OUT)     :: IRET, IBO
 #endif
     !
-    LOGICAL(C_BOOL),      INTENT(IN   )     :: LI(MI)
-    LOGICAL(C_BOOL),      INTENT(  OUT)     :: LO(MO)
+    LOGICAL(C_BOOL),      INTENT(IN   )      :: LI(MI)
+    LOGICAL(C_BOOL),      INTENT(  OUT)      :: LO(MO)
+    LOGICAL(C_BOOL), OPTIONAL, INTENT(IN   ) :: NCEP_POST
+    LOGICAL(C_BOOL)                          :: NCEP_POST_VALUE
     !
 #if (LSIZE==4)
     REAL(C_FLOAT),       INTENT(IN   ) :: GI(MI)
@@ -850,8 +860,14 @@ contains
     desc_in = init_descriptor(igdtnumi, igdtleni, igdtmpli)
     desc_out = init_descriptor(igdtnumo, igdtleno, igdtmplo)
 
-    call init_grid(grid_in, desc_in)
-    call init_grid(grid_out, desc_out)
+    if (.not.present(ncep_post)) then
+      ncep_post_value=.false.
+    else
+      ncep_post_value=ncep_post
+    endif
+
+    call init_grid(grid_in, desc_in, ncep_post=ncep_post_value)
+    call init_grid(grid_out, desc_out, ncep_post=ncep_post_value)
 
     ! Can't pass expression (e.g. [ibo]) to intent(out) argument.
     ! Initialize placeholder array of size 1 to make rank match.

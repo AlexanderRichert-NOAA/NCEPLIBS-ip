@@ -125,9 +125,10 @@ CONTAINS
   !! @param[in] g2_desc A grib2_descriptor
   !!
   !! @author Iredell @date 96-04-10  
-  subroutine init_grib2(self, g2_desc)
+  subroutine init_grib2(self, g2_desc, ncep_post)
     class(ip_polar_stereo_grid), intent(inout) :: self
     type(grib2_descriptor), intent(in) :: g2_desc
+    logical(1), optional, intent(in) :: ncep_post
 
     real :: slat, dx, dy, hi, hj
     integer :: iproj, iscan, jscan

@@ -147,18 +147,20 @@ module ip_grid_mod
        type(grib1_descriptor), intent(in) :: g1_desc
      end subroutine init_grib1_interface
 
-     !> @fn ip_grid_mod::init_grib2_interface::init_grib2_interface(self, g2_desc)
+     !> @fn ip_grid_mod::init_grib2_interface::init_grib2_interface(self, g2_desc, ncep_post)
      !> Init GRIB2 interface.
      !>
      !> @param[inout] self ip_grid_mod object.
      !> @param[in] g2_desc GRIB2 descriptor.
+     !> @param[in] ncep_post Use ncep_post definition for non-E Arakawa grids.
      !>
      !> @author Kyle Gerheiser
      !> @date July 2021
-     subroutine init_grib2_interface(self, g2_desc)
+     subroutine init_grib2_interface(self, g2_desc, ncep_post)
        import
        class(ip_grid), intent(inout) :: self
        type(grib2_descriptor), intent(in) :: g2_desc
+       logical(1), optional, intent(in) :: ncep_post
      end subroutine init_grib2_interface
 
   end interface

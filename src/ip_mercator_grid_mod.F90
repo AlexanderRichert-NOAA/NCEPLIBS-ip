@@ -97,9 +97,10 @@ CONTAINS
   !> @param[in] g2_desc GRIB2 descriptor.
   !>
   !> @author Iredell @date 96-04-10  
-  subroutine init_grib2(self, g2_desc)
+  subroutine init_grib2(self, g2_desc, ncep_post)
     class(ip_mercator_grid), intent(inout) :: self
     type(grib2_descriptor), intent(in) :: g2_desc
+    logical(1), optional, intent(in) :: ncep_post
 
     integer :: iscan, jscan
     real :: hj, dy

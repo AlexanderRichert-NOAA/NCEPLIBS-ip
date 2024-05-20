@@ -30,15 +30,23 @@ contains
   !!
   !! @author Kyle Gerheiser
   !! @date July 2021
-  subroutine init_grid_generic(grid, grid_desc)
+  subroutine init_grid_generic(grid, grid_desc, ncep_post)
     class(ip_grid_descriptor), intent(in) :: grid_desc
     class(ip_grid), allocatable, intent(out) :: grid
+    logical(1), optional, intent(in) :: ncep_post
+    logical(1) :: ncep_post_value
+
+    if (.not.present(ncep_post)) then
+      ncep_post_value=.false.
+    else
+      ncep_post_value=ncep_post
+    endif
 
     select type(grid_desc)
     type is(grib1_descriptor)
        call init_grid_grib1(grid, grid_desc)
     type is(grib2_descriptor)
-       call init_grid_grib2(grid, grid_desc)
+       call init_grid_grib2(grid, grid_desc, ncep_post=ncep_post_value)
     end select
   end subroutine init_grid_generic
 
@@ -86,9 +94,11 @@ contains
   !!
   !! @author Kyle Gerheiser
   !! @date July 2021
-  subroutine init_grid_grib2(grid, g2_desc)
+  subroutine init_grid_grib2(grid, g2_desc, ncep_post)
     type(grib2_descriptor), intent(in) :: g2_desc
     class(ip_grid), allocatable, intent(out) :: grid
+    logical(1), optional, intent(in) :: ncep_post
+    logical(1) :: ncep_post_value
 
     integer :: i_offset_odd, i_offset_even
 
@@ -122,7 +132,13 @@ contains
        error stop
     end select
 
-    call grid%init(g2_desc)
+    if (.not.present(ncep_post)) then
+      ncep_post_value=.false.
+    else
+      ncep_post_value=ncep_post
+    endif
+
+    call grid%init(g2_desc, ncep_post=ncep_post_value)
     allocate(grid%descriptor, source = g2_desc)
   end subroutine init_grid_grib2
   
