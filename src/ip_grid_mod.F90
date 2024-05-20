@@ -176,8 +176,6 @@ module ip_grid_mod
 contains
 
   subroutine use_ncep_post_arakawa() bind(c)
-    !
-    USE ISO_C_BINDING, ONLY: C_BOOL
     ncep_post_arakawa = .true.
   end subroutine use_ncep_post_arakawa
 
