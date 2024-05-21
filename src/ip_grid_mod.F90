@@ -175,6 +175,12 @@ module ip_grid_mod
 
 contains
 
+  !> Enables ncep_post/wgrib2-compatible non-E Arakawa grib2 grids
+  !> by setting ncep_post_arakawa=.true.
+  !> This subroutine should be called prior to init_grib2().
+  !>
+  !> @author Alex Richert
+  !> @date May 2024
   subroutine use_ncep_post_arakawa() bind(c)
     ncep_post_arakawa = .true.
   end subroutine use_ncep_post_arakawa
