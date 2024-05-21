@@ -61,7 +61,7 @@ jobs:
       with:
         name: spackci-ctest-output-${{ matrix.os }}-${{ matrix.variants }}
         path: |
-          ${{ github.workspace }}/*/spack-build-*/Testing/Temporary/LastTest.log
+          /tmp/runner/spack-stage/spack-stage-*/spack-build-*/Testing/Temporary/LastTest.log
           /tmp/runner/spack-stage/spack-stage-*/install-time-test-log.txt
 
   # This job validates the Spack recipe by making sure each cmake build option is represented
