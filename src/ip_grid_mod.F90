@@ -28,7 +28,7 @@ module ip_grid_mod
   integer, public, parameter :: ROT_EQUID_CYLIND_E_GRID_ID_GRIB2 = 32768 !< Integer grid number for rotated equidistant cylindrical E-stagger grid (grib2)
   integer, public, parameter :: ROT_EQUID_CYLIND_B_GRID_ID_GRIB2 = 32769 !< Integer grid number for rotated equidistant cylindrical B-stagger grid (grib2)
 
-  logical, public, save :: ncep_post_arakawa=.false. !< Use ncep_post-compatible version of init_grib2() for non-E Arakawa grids
+  logical, public, save :: ncep_post_arakawa=.false. !< Use ncep_post/wgrib2-compatible version of init_grib2() for non-E Arakawa grids (enable with use_ncep_post_arakawa())
 
   private
   public :: ip_grid
