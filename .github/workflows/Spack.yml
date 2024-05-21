@@ -42,7 +42,7 @@ jobs:
         spack develop --no-clone --path $GITHUB_WORKSPACE/ip ip@develop
         spack add ip@develop%gcc@11 ${{ matrix.variants }} target=x86_64
         precision=$(echo ${{ matrix.variants }} | grep -oP " precision=\K[4d8]")
-        if [ "$precision" == "d" ]; then spack add grib-util@develop +tests ; fi
+        if [ "$precision" == "d" ]; then spack add grib-util@develop +tests ^g2c +build_v2_api ; fi
         spack external find cmake gmake
         spack external find --path /usr/lib/x86_64-linux-gnu/openblas-serial openblas
         spack config add "packages:lapack:buildable:false"
