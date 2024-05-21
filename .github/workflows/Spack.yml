@@ -55,6 +55,15 @@ jobs:
         libvar=IP_LIB${precision}
         ls ${!libvar} | grep -cE "/libip_${precision}\."$suffix'$'
 
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: ${{ failure() }}
+      with:
+        name: spackci-ctest-output-${{ matrix.os }}-${{ matrix.variants }}
+        path: |
+          ${{ github.workspace }}/*/spack-build-*/Testing/Temporary/LastTest.log
+          /tmp/runner/spack-stage/spack-stage-*/install-time-test-log.txt
+
   # This job validates the Spack recipe by making sure each cmake build option is represented
   recipe-check:
     runs-on: ubuntu-latest
