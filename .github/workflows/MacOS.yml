@@ -39,4 +39,4 @@ jobs:
         ls -l ~/install/lib
     
     - name: test
-      run: ctest --test-dir ip/build --verbose --output-on-failure --rerun-failed
+      run: ctest --test-dir ip/build --parallel 2 --verbose --output-on-failure --rerun-failed
