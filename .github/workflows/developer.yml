@@ -29,37 +29,30 @@ jobs:
         python3 -m pip install gcovr
 
     - name: checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with: 
         path: ip
 
     - name: build
       run: |
-        cd ip
-        mkdir build 
-        cd build
-        cmake -DENABLE_DOCS=YES -DOPENMP=ON -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -fsanitize=address" -DCMAKE_C_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -fsanitize=address" -DCMAKE_BUILD_TYPE=Debug -DBUILD_SHARED_LIBS=ON -DBUILD_8=ON ..
-        make -j2 VERBOSE=1
+        cmake -S ip -B ip/build -DENABLE_DOCS=YES -DOPENMP=ON -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -fsanitize=address" -DCMAKE_C_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -fsanitize=address" -DCMAKE_BUILD_TYPE=Debug -DBUILD_SHARED_LIBS=ON -DBUILD_8=ON
+        cmake --build ip/build --parallel 2 --verbose
     
     - name: test
-      run: |
-        cd $GITHUB_WORKSPACE/ip/build
-        ctest -j2 --verbose --output-on-failure --rerun-failed
+      run: ctest --test-dir -j2 --verbose --output-on-failure --rerun-failed
 
     - name: run-gcovr
-      run: |
-        cd $GITHUB_WORKSPACE/ip/build
-        gcovr -r .. -v  --html-details  --exclude ../tests --exclude CMakeFiles --print-summary -o test-coverage.html
+      run: gcovr -r ip -v  --html-details  --exclude ip/tests --exclude ip/build/CMakeFiles --print-summary -o test-coverage.html
 
     - name: upload-test-coverage
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: ip-test-coverage
         path: |
-              ip/build/*.html 
-              ip/build/*.css
+              *.html 
+              *.css
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       with:
         name: docs
         path: |
