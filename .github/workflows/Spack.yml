@@ -26,6 +26,9 @@ jobs:
 
     steps:
 
+    - name: "Install OpenBLAS"
+      run: sudo apt install libopenblas-serial-dev
+
     - name: "Build Spack package"
       uses: NOAA-EMC/ci-test-spack-package@develop
       with:
