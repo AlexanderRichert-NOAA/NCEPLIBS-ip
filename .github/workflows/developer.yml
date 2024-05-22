@@ -39,7 +39,7 @@ jobs:
         cmake --build ip/build --parallel 2 --verbose
     
     - name: test
-      run: ctest --test-dir -j2 --verbose --output-on-failure --rerun-failed
+      run: ctest --test-dir ip/build -j2 --verbose --output-on-failure --rerun-failed
 
     - name: run-gcovr
       run: gcovr -r ip -v  --html-details  --exclude ip/tests --exclude ip/build/CMakeFiles --print-summary -o test-coverage.html
