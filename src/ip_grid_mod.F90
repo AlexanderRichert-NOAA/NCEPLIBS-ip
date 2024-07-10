@@ -35,6 +35,7 @@ module ip_grid_mod
   public :: gdswzd_interface
   public :: operator(==)
   public :: use_ncep_post_arakawa
+  public :: unuse_ncep_post_arakawa
 
   !> Abstract grid that holds fields and methods common to all grids.
   !! ip_grid is meant to be subclassed when implementing a new grid.
@@ -184,6 +185,16 @@ contains
   subroutine use_ncep_post_arakawa() bind(c)
     ncep_post_arakawa = .true.
   end subroutine use_ncep_post_arakawa
+
+  !> Disables ncep_post/wgrib2-compatible non-E Arakawa grib2 grids
+  !> by setting 'ncep_post_arakawa=.false.'.
+  !> This subroutine should be called prior to init_grib2().
+  !>
+  !> @author Alex Richert
+  !> @date May 2024
+  subroutine unuse_ncep_post_arakawa() bind(c)
+    ncep_post_arakawa = .false.
+  end subroutine unuse_ncep_post_arakawa
 
   !> Compares two grids.
   !>

@@ -141,7 +141,7 @@ CONTAINS
     class(ip_rot_equid_cylind_grid), intent(inout) :: self
     type(grib2_descriptor), intent(in) :: g2_desc
 
-    if (ncep_post_arakawa) then
+    if (ncep_post_arakawa.and.(g2_desc%gdt_num.eq.32769)) then
       call init_grib2_ncep_post(self, g2_desc)
     else
       call init_grib2_default(self, g2_desc)
