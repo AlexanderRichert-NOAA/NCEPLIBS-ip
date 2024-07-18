@@ -12,49 +12,32 @@ on:
     branches:
     - develop
 
-# Use custom shell with -l so .bash_profile is sourced which loads intel/oneapi/setvars.sh
-# without having to do it in manually every step
-defaults:
-  run:
-    shell: bash -leo pipefail {0}
-
 jobs:
   Intel:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         openmp: [ ON, OFF ]
-        compilers: ["CC=icc FC=ifort", "CC=icx FC=ifx"]
+        compilers: ["oneapi", "classic"]
 
     steps:
 
-    # See https://software.intel.com/content/www/us/en/develop/articles/oneapi-repo-instructions.html
-    - name: install-intel
-      run: |
-        cd /tmp
-        wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-        sudo apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-        rm GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-        echo "deb https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
-        sudo apt-get update
-        sudo apt-get install intel-oneapi-openmp intel-oneapi-compiler-fortran-2023.2.1 intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic-2023.2.1 intel-oneapi-mkl-devel-2023.2.0
-        echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
+    - name: "Install Intel"
+      uses: NOAA-EMC/ci-install-intel-toolkit@develop
+      with:
+        compiler-setup: ${{ matrix.compilers }}
 
     - name: checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with: 
         path: ip
 
     - name: build
       run: |
-        cd ip
-        mkdir build 
-        cd build
-        ${{ matrix.compilers }} cmake -DOPENMP=${{ matrix.openmp }} -DBUILD_SHARED_LIBS=OFF -DBUILD_8=ON ..
-        make -j2 VERBOSE=1
+        cmake -S ip -B ip/build -DOPENMP=${{ matrix.openmp }} -DBUILD_SHARED_LIBS=OFF -DBUILD_8=ON
+        cmake --build ip/build --parallel 2 --verbose
     
     - name: test
       run: |
         ulimit -s unlimited
-        cd $GITHUB_WORKSPACE/ip/build
-        ctest --verbose --output-on-failure --rerun-failed
+        ctest --test-dir ip/build --verbose --output-on-failure --rerun-failed
