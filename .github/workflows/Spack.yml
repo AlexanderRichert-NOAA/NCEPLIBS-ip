@@ -33,7 +33,7 @@ jobs:
       uses: NOAA-EMC/ci-test-spack-package@develop
       with:
         package-name: ip
-        package-variants: ${{ matrix.variants }} ${{ matrix.variants == '+openmp +shared +pic precision=d' && 'grib-util@develop +tests ^g2c@develop +utils +build_v2_api' || '' }}
+        package-variants: ${{ matrix.variants }} ${{ matrix.variants == '+openmp +shared +pic precision=d' && 'grib-util@develop +tests ^g2c@develop +utils +build_v2_api ^g2@3.5:' || '' }}
         custom-recipe: spack/package.py
         spack-compiler: gcc
         spack-externals: gmake cmake openblas
