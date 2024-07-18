@@ -27,19 +27,16 @@ jobs:
     steps:
 
     - name: checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with: 
         path: ip
 
     - name: build
       run: |
         sudo apt install libopenblas-serial-dev
-        cd ip
-        mkdir build 
-        cd build
-        cmake -DCMAKE_PREFIX_PATH="~/" -DOPENMP=${{ matrix.openmp }} ${{ matrix.options }} -DCMAKE_INSTALL_PREFIX=~/install -DBLA_VENDOR=OpenBLAS ..
-        make -j2 VERBOSE=1
-        make install
+        cmake -S ip -B ip/build -DCMAKE_PREFIX_PATH="~/" -DOPENMP=${{ matrix.openmp }} ${{ matrix.options }} -DCMAKE_INSTALL_PREFIX=~/install -DBLA_VENDOR=OpenBLAS
+        cmake --build ip/build --parallel 2 --verbose
+        cmake --install ip/build
         # Ensure that manual setting of '-DBLA_VENDOR=...' is reflected in output CMake config
         if [ $(grep -c "BLA_VENDOR OpenBLAS" ~/install/lib/cmake/ip/ip-config.cmake) -eq 0 ]; then
           echo "OpenBLAS not set as BLA_VENDOR in ip-config.cmake!"
@@ -47,6 +44,4 @@ jobs:
         fi
     
     - name: test
-      run: |
-        cd $GITHUB_WORKSPACE/ip/build
-        ctest --verbose --output-on-failure --rerun-failed
+      run: ctest --test-dir ip/build --verbose --output-on-failure --rerun-failed

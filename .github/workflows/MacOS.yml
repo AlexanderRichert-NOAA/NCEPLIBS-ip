@@ -26,22 +26,17 @@ jobs:
     steps:
       
     - name: checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with: 
         path: ip
 
     - name: build
       run: |
-        cd ip
-        mkdir build 
-        cd build
-        cmake -DOPENMP=${{ matrix.openmp }} -DBUILD_SHARED_LIBS=${{ matrix.sharedlibs }} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=~/install -DBUILD_8=ON ..
-        make -j2 VERBOSE=2
-        make install
+        cmake -S ip -B ip/build -DOPENMP=${{ matrix.openmp }} -DBUILD_SHARED_LIBS=${{ matrix.sharedlibs }} -DCMAKE_INSTALL_PREFIX=~/install -DBUILD_8=ON -DCMAKE_BUILD_TYPE=Debug
+        cmake --build ip/build --parallel 2 --verbose
+        cmake --install ip/build
         ls -l ~/install
         ls -l ~/install/lib
     
     - name: test
-      run: |
-        cd $GITHUB_WORKSPACE/ip/build
-        ctest --verbose --output-on-failure --rerun-failed
+      run: ctest --test-dir ip/build --parallel 2 --verbose --output-on-failure --rerun-failed
