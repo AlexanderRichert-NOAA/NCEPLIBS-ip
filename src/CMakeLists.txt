@@ -4,7 +4,7 @@
 
 # These are the source code filees.
 set(fortran_src gdswzd_c.F90 gdswzd_mod.F90 ipolates.F90 ipolatev.F90
-ipxetas.F90 ipxwafs.F90 ipxwafs2.F90 ipxwafs3.F90 movect.F90
+ipxwafs.F90 ipxwafs2.F90 ipxwafs3.F90 movect.F90
 bilinear_interp_mod.F90 bicubic_interp_mod.F90 neighbor_interp_mod.F90
 budget_interp_mod.F90 spectral_interp_mod.F90 neighbor_budget_interp_mod.F90
 ip_mod.F90 ip_grid_descriptor_mod.F90 ip_grid_mod.F90
@@ -15,6 +15,10 @@ ip_rot_equid_cylind_egrid_mod.F90 ip_rot_equid_cylind_grid_mod.F90
 ip_constants_mod.F90 ip_grids_mod.F90 ip_grid_factory_mod.F90
 ip_interpolators_mod.F90 earth_radius_mod.F90 polfix_mod.F90
 sp_mod.F)
+
+if(BUILD_DEPRECATED)
+  set(fortran_src ${fortran_src} ipxetas.F90)
+endif()
 
 # Set compiler flags.
 if(CMAKE_BUILD_TYPE MATCHES "Debug")
