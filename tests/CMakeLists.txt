@@ -57,7 +57,7 @@ foreach(kind ${kinds})
   target_link_libraries(test_input_library_grib2_${kind} PUBLIC ip::ip_${kind})
   target_compile_definitions(test_input_library_grib2_${kind} PUBLIC "LSIZE=${kind_definition}")
   set_target_properties(test_input_library_grib2_${kind} PROPERTIES COMPILE_FLAGS "${fortran_${kind}_flags}")
-  add_library(test_library_grib2_${kind} input_data_mod_grib2_${kind}.F90 interp_mod_grib2_${kind}.F90)
+  add_library(test_library_grib2_${kind} interp_mod_grib2_${kind}.F90)
   target_link_libraries(test_library_grib2_${kind} PUBLIC test_input_library_grib2_${kind})
   set_target_properties(test_library_grib2_${kind} PROPERTIES COMPILE_FLAGS "${fortran_${kind}_flags}")
   
