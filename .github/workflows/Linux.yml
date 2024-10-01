@@ -20,8 +20,8 @@ jobs:
       matrix:
         openmp: [ ON, OFF ]
         options: [ -DBUILD_D=OFF, -DBUILD_4=OFF, -DBUILD_8=ON ]
+        gcc-version: [12]
         include:
-          - gcc-version: 12
           - openmp: ON
             options: -DBUILD_8=ON
             gcc-version: 14
