@@ -14,17 +14,25 @@ on:
 
 jobs:
   Linux:
-    runs-on: ubuntu-latest
-    env:
-      FC: gfortran-10
-      CC: gcc-10
+    runs-on: ubuntu-24.04
 
     strategy:
       matrix:
         openmp: [ ON, OFF ]
         options: [ -DBUILD_D=OFF, -DBUILD_4=OFF, -DBUILD_8=ON ]
+        gcc-version: [12]
+        include:
+          - openmp: ON
+            options: -DBUILD_8=ON
+            gcc-version: 14
         
     steps:
+
+    - name: get-gcc
+      run: |
+        if [ -z $(type -P gcc-${{ matrix.gcc-version }}) ]; then
+          sudo apt install gcc-${{ matrix.gcc-version }}
+        fi
 
     - name: checkout
       uses: actions/checkout@v4
@@ -34,6 +42,7 @@ jobs:
     - name: build
       run: |
         sudo apt install libopenblas-serial-dev
+        export CC=gcc-${{ matrix.gcc-version }} ; export FC=gfortran-${{ matrix.gcc-version }}
         cmake -S ip -B ip/build -DCMAKE_PREFIX_PATH="~/" -DOPENMP=${{ matrix.openmp }} ${{ matrix.options }} -DCMAKE_INSTALL_PREFIX=~/install -DBLA_VENDOR=OpenBLAS
         cmake --build ip/build --parallel 2 --verbose
         cmake --install ip/build
