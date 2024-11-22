@@ -42,7 +42,7 @@ jobs:
       run: ctest --test-dir ip/build -j2 --verbose --output-on-failure --rerun-failed
 
     - name: run-gcovr
-      run: gcovr -r ip -v  --html-details  --exclude ip/tests --exclude ip/build/CMakeFiles --print-summary -o test-coverage.html
+      run: gcovr -r ip -v  --html-details  --exclude ip/tests --exclude ip/build/CMakeFiles --gcov-ignore-parse-errors --print-summary -o test-coverage.html
 
     - name: upload-test-coverage
       uses: actions/upload-artifact@v4
