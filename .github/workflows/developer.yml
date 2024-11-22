@@ -26,7 +26,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install doxygen libopenblas-dev
-        python3 -m pip install gcovr
+        python3 -m pip install gcovr==7.2
 
     - name: checkout
       uses: actions/checkout@v4
