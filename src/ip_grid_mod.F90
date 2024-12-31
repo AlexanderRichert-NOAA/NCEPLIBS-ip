@@ -77,7 +77,7 @@ module ip_grid_mod
      real :: rerth !< Radius of the Earth.
      real :: eccen_squared !< Eccentricity of the Earth squared (e^2).
    contains
-     !> @cond
+     !> @cond skip
      !> Initializer for grib1 input descriptor.
      procedure(init_grib1_interface), deferred :: init_grib1
      !> Initializer for grib2 input descriptor.
