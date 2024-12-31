@@ -73,7 +73,7 @@ class Ip(CMakePackage):
         args = [
             self.define_from_variant("OPENMP", "openmp"),
             self.define_from_variant("CMAKE_POSITION_INDEPENDENT_CODE", "pic"),
-            self.define_from_variant("FTP_TEST_FILES", self.run_tests),
+            self.define("FTP_TEST_FILES", self.run_tests),
         ]
 
         if self.spec.satisfies("@4:"):
