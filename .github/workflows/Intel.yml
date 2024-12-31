@@ -34,6 +34,7 @@ jobs:
 
     - name: build
       run: |
+        sudo apt install libopenblas-serial-dev
         cmake -S ip -B ip/build -DOPENMP=${{ matrix.openmp }} -DBUILD_SHARED_LIBS=OFF -DBUILD_8=ON -DFTP_TEST_FILES=ON
         cmake --build ip/build --parallel 2 --verbose
     
