@@ -32,7 +32,7 @@ jobs:
 
     - name: build
       run: |
-        cmake -S ip -B ip/build -DOPENMP=${{ matrix.openmp }} -DBUILD_SHARED_LIBS=${{ matrix.sharedlibs }} -DCMAKE_INSTALL_PREFIX=~/install -DBUILD_8=ON -DCMAKE_BUILD_TYPE=Debug
+        cmake -S ip -B ip/build -DOPENMP=${{ matrix.openmp }} -DBUILD_SHARED_LIBS=${{ matrix.sharedlibs }} -DCMAKE_INSTALL_PREFIX=~/install -DBUILD_8=ON -DCMAKE_BUILD_TYPE=Debug -DFTP_TEST_FILES=ON
         cmake --build ip/build --parallel 2 --verbose
         cmake --install ip/build
         ls -l ~/install

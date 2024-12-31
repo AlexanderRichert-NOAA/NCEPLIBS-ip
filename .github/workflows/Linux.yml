@@ -43,7 +43,7 @@ jobs:
       run: |
         sudo apt install libopenblas-serial-dev
         export CC=gcc-${{ matrix.gcc-version }} ; export FC=gfortran-${{ matrix.gcc-version }}
-        cmake -S ip -B ip/build -DCMAKE_PREFIX_PATH="~/" -DOPENMP=${{ matrix.openmp }} ${{ matrix.options }} -DCMAKE_INSTALL_PREFIX=~/install -DBLA_VENDOR=OpenBLAS
+        cmake -S ip -B ip/build -DCMAKE_PREFIX_PATH="~/" -DOPENMP=${{ matrix.openmp }} ${{ matrix.options }} -DCMAKE_INSTALL_PREFIX=~/install -DBLA_VENDOR=OpenBLAS -DFTP_TEST_FILES=ON
         cmake --build ip/build --parallel 2 --verbose
         cmake --install ip/build
         # Ensure that manual setting of '-DBLA_VENDOR=...' is reflected in output CMake config

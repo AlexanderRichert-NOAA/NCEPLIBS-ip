@@ -17,8 +17,8 @@ jobs:
   developer:
     runs-on: ubuntu-latest
     env:
-      FC: gfortran-11
-      CC: gcc-11
+      FC: gfortran-13
+      CC: gcc-13
 
     steps:
 
@@ -35,7 +35,7 @@ jobs:
 
     - name: build
       run: |
-        cmake -S ip -B ip/build -DENABLE_DOCS=YES -DOPENMP=ON -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -fsanitize=address" -DCMAKE_C_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -fsanitize=address" -DCMAKE_BUILD_TYPE=Debug -DBUILD_SHARED_LIBS=ON -DBUILD_8=ON
+        cmake -S ip -B ip/build -DENABLE_DOCS=YES -DOPENMP=ON -DCMAKE_Fortran_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -fsanitize=address" -DCMAKE_C_FLAGS="-g -fprofile-abs-path -fprofile-arcs -ftest-coverage -O0 -fsanitize=address" -DCMAKE_BUILD_TYPE=Debug -DBUILD_SHARED_LIBS=ON -DBUILD_8=ON -DFTP_TEST_FILES=ON
         cmake --build ip/build --parallel 2 --verbose
     
     - name: test
@@ -57,4 +57,3 @@ jobs:
         name: docs
         path: |
           ip/build/docs/html
-              
