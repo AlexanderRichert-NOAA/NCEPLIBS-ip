@@ -2,6 +2,43 @@
 #
 # Alex Richert, Mark Potts, Kyle Gerheiser, Eric Engle
 
+if(FTP_TEST_FILES)
+  set(TEST_TARBALL_FILE "ip-test-data-20241230.tgz")
+  set(TEST_TARBALL_URL "https://ftp.emc.ncep.noaa.gov/static_files/public/NCEPLIBS-ip/${TEST_TARBALL_FILE}")
+  if(EXISTS ${CMAKE_CURRENT_BINARY_DIR}/${TEST_TARBALL_FILE})
+    message(STATUS "Using existing cached test file ${CMAKE_CURRENT_BINARY_DIR}/${TEST_TARBALL_FILE} ...")
+  elseif(TEST_FILES_CACHE)
+    if(EXISTS ${CMAKE_CURRENT_BINARY_DIR}/${TEST_TARBALL_FILE})
+      message(STATUS "Using existing cached test file ${CMAKE_CURRENT_BINARY_DIR}/${TEST_TARBALL_FILE} ...")
+    else()
+      message(STATUS "Copying in cached test file ${TEST_FILES_CACHE} ...")
+      file(COPY_FILE
+        ${TEST_FILES_CACHE}
+        ${CMAKE_CURRENT_BINARY_DIR}/${TEST_TARBALL_FILE}
+      )
+    endif()
+  else()
+    file(DOWNLOAD
+      ${TEST_TARBALL_URL}
+      ${CMAKE_CURRENT_BINARY_DIR}/${TEST_TARBALL_FILE}
+      SHOW_PROGRESS
+      STATUS DOWNLOAD_RESULT
+      INACTIVITY_TIMEOUT 30
+      )
+    if(NOT DOWNLOAD_RESULT EQUAL 0)
+      message(FATAL_ERROR "Failed to download ${TAR_FILE}")
+    endif()
+  endif()
+  find_program(TAR tar)
+  execute_process(
+    COMMAND ${TAR} -xzf "${CMAKE_CURRENT_BINARY_DIR}/${TEST_TARBALL_FILE}" -C "${CMAKE_CURRENT_BINARY_DIR}"
+    RESULT_VARIABLE TAR_RESULT
+  )
+  if(NOT TAR_RESULT EQUAL 0)
+    message(FATAL_ERROR "Failed to extract ${TAR_FILE}")
+  endif()
+endif()
+
 function(create_sp_test name kind timeout)
   add_executable(${name}_${kind} ${name}.F90)
 
@@ -21,12 +58,6 @@ function(create_sp_test name kind timeout)
     set_tests_properties(${name}_${kind} PROPERTIES TIMEOUT ${timeout})
   endif()
 endfunction()
-
-# Link data directory to find the test data.
-execute_process(COMMAND cmake -E create_symlink
-  "${CMAKE_CURRENT_SOURCE_DIR}/data"
-  "${CMAKE_CURRENT_BINARY_DIR}/data" # New name
-  )
 
 # Set compiler flags.
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} ${CMAKE_Fortran_FLAGS_DEBUG}")

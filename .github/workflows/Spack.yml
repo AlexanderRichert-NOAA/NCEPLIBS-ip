@@ -50,4 +50,4 @@ jobs:
       with:
         recipe-file: package/spack/package.py
         cmakelists-txt: package/CMakeLists.txt
-        ignore-list: ENABLE_DOCS,TEST_TIME_LIMIT
+        ignore-list: ENABLE_DOCS,TEST_TIME_LIMIT,TEST_FILES_CACHE

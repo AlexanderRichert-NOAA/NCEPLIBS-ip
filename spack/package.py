@@ -67,12 +67,13 @@ class Ip(CMakePackage):
     depends_on("sp precision=d", when="@4.1:4 precision=d")
     depends_on("sp precision=8", when="@4.1:4 precision=8")
     depends_on("lapack", when="@5.1:")
-    depends_on("cmake@3.18:", when="@5.1:")
+    depends_on("cmake@3.18:", when="@5.1:", type="build")
 
     def cmake_args(self):
         args = [
             self.define_from_variant("OPENMP", "openmp"),
             self.define_from_variant("CMAKE_POSITION_INDEPENDENT_CODE", "pic"),
+            self.define("FTP_TEST_FILES", self.run_tests),
         ]
 
         if self.spec.satisfies("@4:"):
