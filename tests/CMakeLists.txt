@@ -182,6 +182,19 @@ foreach(kind ${kinds})
   add_test(test_rotatedB_spectral_vector_grib1_${kind} test_vector_grib1_${kind} 205 4)
   add_test(test_rotatedE_budget_vector_grib1_${kind} test_vector_grib1_${kind} 203 3)
 
+  set(slowtests
+    "test_rotatedB_spectral_vector_grib1"
+    "test_rotatedB_spectral_scalar_grib1"
+    "test_rotatedB_spectral_vector_grib2"
+    "test_rotatedB_direct_spectral_vector_grib2"
+    "test_rotatedB_direct_ncep_post_spectral_vector_grib2"
+    "test_rotatedB_spectral_scalar_grib2"
+  )
+
+  foreach(slowtest IN LISTS slowtests)
+    set_tests_properties("${slowtest}_${kind}" PROPERTIES LABELS "SLOW_TEST")
+  endforeach()
+
   # sp tests
   create_sp_test(test_ncpus ${kind} 0.3)
   create_sp_test(test_splaplac ${kind} 0.3)
