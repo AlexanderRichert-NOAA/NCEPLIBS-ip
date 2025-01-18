@@ -34,6 +34,7 @@ jobs:
         custom-recipe: spack/package.py
         spack-compiler: gcc
         repo-cache-key-suffix: ${{ matrix.os }}-${{ matrix.variants }}-1
+        use-repo-cache: false
 
   # This job validates the Spack recipe by making sure each cmake build option is represented
   recipe-check:
