@@ -35,6 +35,7 @@ jobs:
         spack-compiler: gcc
         repo-cache-key-suffix: ${{ matrix.os }}-${{ matrix.variants }}-1
         use-repo-cache: false
+        cpu-target: zen2
 
   # This job validates the Spack recipe by making sure each cmake build option is represented
   recipe-check:
