@@ -36,8 +36,8 @@ jobs:
         package-variants: ${{ matrix.variants }} ${{ matrix.variants == '+openmp +shared +pic precision=d' && 'grib-util@develop +tests ^g2c@develop +utils +build_v2_api ^g2@3.5:' || '' }}
         custom-recipe: spack/package.py
         spack-compiler: gcc
-        spack-externals: gmake cmake openblas
         repo-cache-key-suffix: ${{ matrix.os }}-${{ matrix.variants }}-1
+        spack-ref: develop
 
   # This job validates the Spack recipe by making sure each cmake build option is represented
   recipe-check:
