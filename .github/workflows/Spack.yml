@@ -30,7 +30,7 @@ jobs:
       run: sudo apt install libopenblas-serial-dev
 
     - name: "Build Spack package"
-      uses: NOAA-EMC/ci-test-spack-package@develop
+      uses: NOAA-EMC/ci-test-spack-package@test
       with:
         package-name: ip
         package-variants: ${{ matrix.variants }} ${{ matrix.variants == '+openmp +shared +pic precision=d' && 'grib-util@develop +tests ^g2c@develop +utils +build_v2_api ^g2@3.5:' || '' }}
