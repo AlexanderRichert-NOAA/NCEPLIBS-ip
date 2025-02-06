@@ -204,4 +204,22 @@ foreach(kind ${kinds})
   create_sp_test(test_fft ${kind} 0.3)
   create_sp_test(test_sptrung ${kind} 0.3)
   create_sp_test(test_sptrungv ${kind} 2)
+
+  # label tests without input data to allow trimmed down unit test runs
+  set(noinputdatatests
+    "test_earth_radius"
+    "test_fft"
+    "test_ipxwafs"
+    "test_ncpus"
+    "test_splaplac"
+    "test_splat"
+    "test_sppad"
+    "test_sptezv"
+    "tst_gdswzd_c_grib1"
+    "tst_gdswzd_c_grib2"
+  )
+  foreach(noinputdatatest IN LISTS noinputdatatests)
+    set_tests_properties("${noinputdatatest}_${kind}" PROPERTIES LABELS "NO_INPUT_DATA")
+  endforeach()
+
 endforeach()
