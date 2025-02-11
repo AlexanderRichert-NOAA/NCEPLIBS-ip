@@ -316,7 +316,7 @@ C> @author Paul N. Swarztrauber, National Center for Atmospheric Research, Bould
       RETURN
       END
 
-C> Compute a forward transform of a real periodic sequence
+C> @brief Compute a forward transform of a real periodic sequence
 C>
 C> The wsave array must be initialized by calling subroutine rffti(n,wsave) and a
 C> different wsave array must be used for each different value of n. This
