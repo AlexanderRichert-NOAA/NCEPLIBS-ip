@@ -211,6 +211,7 @@ foreach(kind ${kinds})
   target_compile_definitions(test_fftpack_${kind} PRIVATE "LSIZE=${kind}")
   set_target_properties(test_fftpack_${kind} PROPERTIES COMPILE_FLAGS "${fortran_${kind}_flags}")
   target_link_libraries(test_fftpack_${kind} PRIVATE test_fftpack_mod_${kind})
+  target_include_directories(test_fftpack_${kind} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
   add_test(test_fftpack_${kind} test_fftpack_${kind})
 
   ### Add test labels:
