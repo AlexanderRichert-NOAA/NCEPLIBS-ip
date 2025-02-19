@@ -1,4 +1,7 @@
-# This is the CMake file for the test directory of NCEPLIBS-ip.
+# This is the CMake file for the tests/ directory of NCEPLIBS-ip.
+# It define dozens of CTest unit tests. All new and modified code
+# should have one or more unit tests to verify correct operation,
+# including validation of outputs against known cases.
 #
 # Alex Richert, Mark Potts, Kyle Gerheiser, Eric Engle
 
@@ -69,21 +72,22 @@ endif()
 foreach(kind ${kinds})
   string(TOUPPER ${kind} kind_definition)
 
-  # Test ipxwafs routines
+  ### Test ipxwafs routines
   add_executable(test_ipxwafs_${kind} test_ipxwafs.F90)
   target_link_libraries(test_ipxwafs_${kind} PUBLIC ip::ip_${kind})
   target_compile_definitions(test_ipxwafs_${kind} PRIVATE "LSIZE=${kind_definition}")
   set_target_properties(test_ipxwafs_${kind} PROPERTIES COMPILE_FLAGS "${fortran_${kind}_flags}")
   add_test(test_ipxwafs_${kind} test_ipxwafs_${kind})
 
-  # Test earth_radius_mod.
+  ### Test earth_radius_mod.
   add_executable(test_earth_radius_${kind} test_earth_radius.F90)
   target_link_libraries(test_earth_radius_${kind} PUBLIC ip::ip_${kind})
   target_compile_definitions(test_earth_radius_${kind} PRIVATE "LSIZE=${kind_definition}")
   set_target_properties(test_earth_radius_${kind} PROPERTIES COMPILE_FLAGS "${fortran_${kind}_flags}")
   add_test(test_earth_radius_${kind} test_earth_radius_${kind})
-  
-  # grib-2 tests
+
+  ### GRIB2 tests
+  # Create mod files by kind, GRIB1
   add_library(test_input_library_grib2_${kind} input_data_mod_grib2_${kind}.F90)
   target_link_libraries(test_input_library_grib2_${kind} PUBLIC ip::ip_${kind})
   target_compile_definitions(test_input_library_grib2_${kind} PUBLIC "LSIZE=${kind_definition}")
@@ -91,7 +95,8 @@ foreach(kind ${kinds})
   add_library(test_library_grib2_${kind} interp_mod_grib2_${kind}.F90)
   target_link_libraries(test_library_grib2_${kind} PUBLIC test_input_library_grib2_${kind})
   set_target_properties(test_library_grib2_${kind} PROPERTIES COMPILE_FLAGS "${fortran_${kind}_flags}")
-  
+
+  # Set up executables, GRIB2
   add_executable(tst_gdswzd_grib2_${kind} tst_gdswzd_grib2.c)
   set_target_properties(tst_gdswzd_grib2_${kind} PROPERTIES LINKER_LANGUAGE C)
   target_compile_definitions(tst_gdswzd_grib2_${kind} PRIVATE "LSIZE=${kind_definition}")
@@ -103,10 +108,11 @@ foreach(kind ${kinds})
   target_link_libraries(test_vector_grib2_${kind} PRIVATE test_library_grib2_${kind})
   set_target_properties(test_scalar_grib2_${kind} PROPERTIES COMPILE_FLAGS "${fortran_${kind}_flags}")
   set_target_properties(test_vector_grib2_${kind} PROPERTIES COMPILE_FLAGS "${fortran_${kind}_flags}")
-  
+
+  # GDSWZD test, GRIB2
   add_test(tst_gdswzd_c_grib2_${kind} tst_gdswzd_grib2_${kind})
-  
-  # scalar tests
+
+  # Scalar tests, GRIB2
   add_test(test_lambert_bilinear_scalar_grib2_${kind} test_scalar_grib2_${kind} 218 0)
   add_test(test_gaussian_neighbor_scalar_grib2_${kind} test_scalar_grib2_${kind} 127 2)
   add_test(test_latlon_bilinear_scalar_grib2_${kind} test_scalar_grib2_${kind} 3 0)
@@ -115,15 +121,15 @@ foreach(kind ${kinds})
   add_test(test_rotatedB_spectral_scalar_grib2_${kind} test_scalar_grib2_${kind} 205 4)
   add_test(test_rotatedE_budget_scalar_grib2_${kind} test_scalar_grib2_${kind} 203 3)
 
-  # scalar station point tests
+  # Scalar station point tests, GRIB2
   add_test(test_station_points_bilinear_scalar_grib2_${kind} test_scalar_grib2_${kind} -1 0)
   add_test(test_station_points_bicubic_scalar_grib2_${kind} test_scalar_grib2_${kind} -1 1)
   add_test(test_station_points_neighbor_scalar_grib2_${kind} test_scalar_grib2_${kind} -1 2)
   add_test(test_station_points_budget_scalar_grib2_${kind} test_scalar_grib2_${kind} -1 3)
   add_test(test_station_points_spectral_scalar_grib2_${kind} test_scalar_grib2_${kind} -1 4)
   add_test(test_station_points_neighbor_budget_scalar_grib2_${kind} test_scalar_grib2_${kind} -1 6)
-  
-  # # vector tests
+
+  # Vector tests, GRIB2
   add_test(test_lambert_bilinear_vector_grib2_${kind} test_vector_grib2_${kind} 218 0)
   add_test(test_gaussian_neighbor_vector_grib2_${kind} test_vector_grib2_${kind} 127 2)
   add_test(test_latlon_bilinear_vector_grib2_${kind} test_vector_grib2_${kind} 3 0)
@@ -135,15 +141,16 @@ foreach(kind ${kinds})
   add_test(test_rotatedB_direct_ncep_post_spectral_vector_grib2_${kind} test_vector_grib2_${kind} 32769b 4)
   add_test(test_rotatedE_direct_budget_vector_grib2_${kind} test_vector_grib2_${kind} 32768 3)
 
-  # vector station point tests
+  # Vector station point tests, GRIB2
   add_test(test_station_points_bilinear_vector_grib2_${kind} test_vector_grib2_${kind} -1 0)
   add_test(test_station_points_bicubic_vector_grib2_${kind} test_vector_grib2_${kind} -1 1)
   add_test(test_station_points_neighbor_vector_grib2_${kind} test_vector_grib2_${kind} -1 2)
   add_test(test_station_points_budget_vector_grib2_${kind} test_vector_grib2_${kind} -1 3)
   add_test(test_station_points_spectral_vector_grib2_${kind} test_vector_grib2_${kind} -1 4)
   add_test(test_station_points_neighbor_budget_vector_grib2_${kind} test_vector_grib2_${kind} -1 6)
-  
-  # grib-1 tests
+
+  ### GRIB1 tests
+  # Create mod files by kind, GRIB1
   add_library(test_input_library_grib1_${kind} input_data_mod_grib1_${kind}.F90)
   target_link_libraries(test_input_library_grib1_${kind} PUBLIC ip::ip_${kind})
   target_compile_definitions(test_input_library_grib1_${kind} PUBLIC "LSIZE=${kind_definition}")
@@ -151,7 +158,8 @@ foreach(kind ${kinds})
   add_library(test_library_grib1_${kind} interp_mod_grib1_${kind}.F90)
   target_link_libraries(test_library_grib1_${kind} PUBLIC test_input_library_grib1_${kind})
   set_target_properties(test_library_grib1_${kind} PROPERTIES COMPILE_FLAGS "${fortran_${kind}_flags}")
-  
+
+  # Set up executables, GRIB1
   add_executable(tst_gdswzd_grib1_${kind} tst_gdswzd_grib1.c)
   set_target_properties(tst_gdswzd_grib1_${kind} PROPERTIES LINKER_LANGUAGE C)
   target_compile_definitions(tst_gdswzd_grib1_${kind} PRIVATE "LSIZE=${kind_definition}")
@@ -163,8 +171,11 @@ foreach(kind ${kinds})
   target_link_libraries(test_vector_grib1_${kind} PRIVATE test_library_grib1_${kind})
   set_target_properties(test_scalar_grib1_${kind} PROPERTIES COMPILE_FLAGS "${fortran_${kind}_flags}")
   set_target_properties(test_vector_grib1_${kind} PROPERTIES COMPILE_FLAGS "${fortran_${kind}_flags}")
-  
+
+  # GDSWZD test, GRIB1
   add_test(tst_gdswzd_c_grib1_${kind} tst_gdswzd_grib1_${kind})
+
+  # Scalar tests, GRIB1
   add_test(test_lambert_bilinear_scalar_grib1_${kind} test_scalar_grib1_${kind} 218 0)
   add_test(test_gaussian_neighbor_scalar_grib1_${kind} test_scalar_grib1_${kind} 127 2)
   add_test(test_latlon_bilinear_scalar_grib1_${kind} test_scalar_grib1_${kind} 3 0)
@@ -172,8 +183,8 @@ foreach(kind ${kinds})
   add_test(test_polar_stereo_neighbor_budget_scalar_grib1_${kind} test_scalar_grib1_${kind} 212 6)
   add_test(test_rotatedB_spectral_scalar_grib1_${kind} test_scalar_grib1_${kind} 205 4)
   add_test(test_rotatedE_budget_scalar_grib1_${kind} test_scalar_grib1_${kind} 203 3)
-  
-  # vector tests
+
+  # Vector tests, GRIB1
   add_test(test_lambert_bilinear_vector_grib1_${kind} test_vector_grib1_${kind} 218 0)
   add_test(test_gaussian_neighbor_vector_grib1_${kind} test_vector_grib1_${kind} 127 2)
   add_test(test_latlon_bilinear_vector_grib1_${kind} test_vector_grib1_${kind} 3 0)
@@ -182,6 +193,29 @@ foreach(kind ${kinds})
   add_test(test_rotatedB_spectral_vector_grib1_${kind} test_vector_grib1_${kind} 205 4)
   add_test(test_rotatedE_budget_vector_grib1_${kind} test_vector_grib1_${kind} 203 3)
 
+  ### Various sp_mod tests
+  create_sp_test(test_ncpus ${kind} 0.3)
+  create_sp_test(test_splaplac ${kind} 0.3)
+  create_sp_test(test_splat ${kind} 0.3)
+  create_sp_test(test_sppad ${kind} 0.3)
+  create_sp_test(test_sptezv ${kind} 0.3)
+  create_sp_test(test_fft ${kind} 0.3)
+  create_sp_test(test_sptrung ${kind} 0.3)
+  create_sp_test(test_sptrungv ${kind} 2)
+
+  ### Tests for fftpack subroutines
+  add_library(test_fftpack_mod_${kind} test_fftpack_mod_${kind}.F90)
+  target_link_libraries(test_fftpack_mod_${kind} PRIVATE ip::ip_${kind})
+  set_target_properties(test_fftpack_mod_${kind} PROPERTIES COMPILE_FLAGS "${fortran_${kind}_flags}")
+  add_executable(test_fftpack_${kind} test_fftpack.F90)
+  target_compile_definitions(test_fftpack_${kind} PRIVATE "LSIZE=${kind}")
+  set_target_properties(test_fftpack_${kind} PROPERTIES COMPILE_FLAGS "${fortran_${kind}_flags}")
+  target_link_libraries(test_fftpack_${kind} PRIVATE test_fftpack_mod_${kind})
+  add_test(test_fftpack_${kind} test_fftpack_${kind})
+
+  ### Add test labels:
+
+  # Label slow-running tests so they can be skipped using 'ctest -LE/--label-exclude'
   set(slowtests
     "test_rotatedB_spectral_vector_grib1"
     "test_rotatedB_spectral_scalar_grib1"
@@ -195,17 +229,8 @@ foreach(kind ${kinds})
     set_tests_properties("${slowtest}_${kind}" PROPERTIES LABELS "SLOW_TEST")
   endforeach()
 
-  # sp tests
-  create_sp_test(test_ncpus ${kind} 0.3)
-  create_sp_test(test_splaplac ${kind} 0.3)
-  create_sp_test(test_splat ${kind} 0.3)
-  create_sp_test(test_sppad ${kind} 0.3)
-  create_sp_test(test_sptezv ${kind} 0.3)
-  create_sp_test(test_fft ${kind} 0.3)
-  create_sp_test(test_sptrung ${kind} 0.3)
-  create_sp_test(test_sptrungv ${kind} 2)
-
-  # label tests without input data to allow trimmed down unit test runs
+  # Label tests without input data to allow trimmed down unit test runs
+  # using 'ctest -L NO_INPUT_DATA'.
   set(noinputdatatests
     "test_earth_radius"
     "test_fft"
