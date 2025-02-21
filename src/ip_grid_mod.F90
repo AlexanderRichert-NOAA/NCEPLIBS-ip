@@ -77,14 +77,17 @@ module ip_grid_mod
      real :: rerth !< Radius of the Earth.
      real :: eccen_squared !< Eccentricity of the Earth squared (e^2).
    contains
-     !> Initializer for grib1 input descriptor. @return N/A
+     !> @cond skip
+     !> Initializer for grib1 input descriptor.
      procedure(init_grib1_interface), deferred :: init_grib1
-     !> Initializer for grib2 input descriptor. @return N/A
+     !> Initializer for grib2 input descriptor.
      procedure(init_grib2_interface), deferred :: init_grib2
-     !> Coordinate transformations for the grid. @return N/A
+     !> Coordinate transformations for the grid.
      procedure(gdswzd_interface), deferred :: gdswzd
+     !> @endcond
      !> Field position for a given grid point. @return Integer
      !> position in grib field to locate grid point.
+     !> @copydoc ip_grid_mod::field_pos
      procedure :: field_pos
      !> Init subprogram. @return N/A
      generic :: init => init_grib1, init_grib2
