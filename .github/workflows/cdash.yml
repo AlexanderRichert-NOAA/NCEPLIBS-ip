@@ -22,7 +22,7 @@ jobs:
     - name: Install Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install valgrind libopenblas-dev
+        sudo apt-get install valgrind libopenblas-serial-dev
 
 # add ftp file caching
 
