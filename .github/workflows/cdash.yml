@@ -10,7 +10,7 @@ on:
     - cdash
 
 jobs:
-  developer:
+  cdash:
     runs-on: ubuntu-latest
     env:
       FC: gfortran
