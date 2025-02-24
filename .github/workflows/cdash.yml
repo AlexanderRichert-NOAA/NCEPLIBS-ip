@@ -1,0 +1,33 @@
+# This is a CI workflow for the NCEPLIBS-ip project.
+#
+# CDash
+#
+
+name: cdash
+on:
+  push:
+    branches:
+    - cdash
+
+jobs:
+  developer:
+    runs-on: ubuntu-latest
+    env:
+      FC: gfortran
+      CC: gcc
+      CDASH_TOKEN: ${{ secrets.CDASH_TOKEN }}
+
+    steps:
+
+    - name: Install Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install gcov valgrind
+
+# add ftp file caching
+
+    - name: CDash
+      uses: AlexanderRichert-NOAA/ci-cdash@develop
+      with:
+        package-name: NCEPLIBS-ip
+        extra-ctest-args: -L NO_INPUT_DATA
