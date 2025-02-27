@@ -20,7 +20,7 @@ jobs:
       uses: actions/cache/restore@v4.0.0
       with:
         path: ip-test-data-20241230.tgz
-        key: NCEPLIBS-ip-test-files-1
+        key: NCEPLIBS-ip-test-files-2
 
     - name: CDash
       uses: AlexanderRichert-NOAA/ci-cdash@develop
