@@ -38,5 +38,5 @@ jobs:
       uses: actions/cache/save@v4
       if: steps.cache-restore.outputs.cache-hit != 'true'
       with:
-        path: ${{ github.workspace }}/ip-test-data-20241230.tgz
-        key: NCEPLIBS-ip-test-files-1
+        path: ${{ github.workspace }}/coderoot/build/tests/ip-test-data-20241230.tgz
+        key: ${{ steps.cache-restore.outputs.cache-primary-key }}
