@@ -12,22 +12,22 @@ on:
 jobs:
   cdash:
     runs-on: ubuntu-latest
-    env:
-      FC: gfortran
-      CC: gcc
-      CDASH_TOKEN: ${{ secrets.CDASH_TOKEN }}
 
     steps:
 
     - name: Restore cached test files
       id: cache-restore
-      uses: actions/cache/restore@v4
+      uses: actions/cache/restore@v4.2.1
       with:
         path: ip-test-data-20241230.tgz
         key: NCEPLIBS-ip-test-files-1
 
     - name: CDash
       uses: AlexanderRichert-NOAA/ci-cdash@develop
+      env:
+        FC: gfortran
+        CC: gcc
+        CDASH_TOKEN: ${{ secrets.CDASH_TOKEN }}
       with:
         package-name: NCEPLIBS-ip
         extra-cmake-options: -DFTP_TEST_FILES=ON -DTEST_FILES_CACHE=${{ github.workspace }}/ip-test-data-20241230.tgz
@@ -35,7 +35,7 @@ jobs:
         extra-ctest-options: -LE SLOW_TEST
 
     - name: Cache test files
-      uses: actions/cache/save@v4
+      uses: actions/cache/save@v4.2.1
       if: steps.cache-restore.outputs.cache-hit != 'true'
       with:
         path: ${{ github.workspace }}/coderoot/build/tests/ip-test-data-20241230.tgz
