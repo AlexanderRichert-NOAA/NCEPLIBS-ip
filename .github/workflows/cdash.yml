@@ -29,5 +29,5 @@ jobs:
       uses: AlexanderRichert-NOAA/ci-cdash@develop
       with:
         package-name: NCEPLIBS-ip
-        extra-config-options: -DFTP_TEST_FILES=ON -DTEST_FILES_CACHE=ON
+        extra-cmake-options: -DFTP_TEST_FILES=ON -DTEST_FILES_CACHE=ON
         extra-apt-packages: libopenblas-serial-dev
