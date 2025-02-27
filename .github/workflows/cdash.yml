@@ -19,15 +19,15 @@ jobs:
 
     steps:
 
-    - name: Install Dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install valgrind libopenblas-serial-dev
-
-# add ftp file caching
+    - name: Cache test files
+      uses: actions/cache@v4
+      with:
+        path: coderoot/build/tests/ip-test-data-20241230.tgz
+        key: NCEPLIBS-ip-test-files-1
 
     - name: CDash
       uses: AlexanderRichert-NOAA/ci-cdash@develop
       with:
         package-name: NCEPLIBS-ip
-        extra-ctest-args: -L NO_INPUT_DATA
+        extra-config-args: -DFTP_TEST_FILES=ON -DTEST_FILES_CACHE=ON
+        extra-apt-packages: libopenblas-serial-dev
