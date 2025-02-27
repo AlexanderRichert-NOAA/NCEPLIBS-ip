@@ -32,7 +32,7 @@ jobs:
         package-name: NCEPLIBS-ip
         extra-cmake-options: -DFTP_TEST_FILES=ON -DTEST_FILES_CACHE=${{ github.workspace }}/ip-test-data-20241230.tgz
         extra-apt-packages: libopenblas-serial-dev
-        extra-ctest-options: -LE SLOW_TEST -L NO_INPUT_DATA
+        extra-ctest-options: -LE SLOW_TEST -L NO_INPUT_DATA -VV
 
     - name: Cache test files
       uses: actions/cache/save@v4
