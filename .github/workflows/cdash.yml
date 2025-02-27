@@ -22,12 +22,12 @@ jobs:
     - name: Cache test files
       uses: actions/cache@v4
       with:
-        path: coderoot/build/tests/ip-test-data-20241230.tgz
+        path: ip-test-data-20241230.tgz
         key: NCEPLIBS-ip-test-files-1
 
     - name: CDash
       uses: AlexanderRichert-NOAA/ci-cdash@develop
       with:
         package-name: NCEPLIBS-ip
-        extra-cmake-options: -DFTP_TEST_FILES=ON
+        extra-cmake-options: -DFTP_TEST_FILES=ON -DTEST_FILES_CACHE=${{ github.workspace }}/ip-test-data-20241230.tgz
         extra-apt-packages: libopenblas-serial-dev
