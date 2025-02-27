@@ -10,16 +10,12 @@ if(FTP_TEST_FILES)
   set(TEST_TARBALL_URL "https://ftp.emc.ncep.noaa.gov/static_files/public/NCEPLIBS-ip/${TEST_TARBALL_FILE}")
   if(EXISTS ${CMAKE_CURRENT_BINARY_DIR}/${TEST_TARBALL_FILE})
     message(STATUS "Using existing cached test file ${CMAKE_CURRENT_BINARY_DIR}/${TEST_TARBALL_FILE} ...")
-  elseif(TEST_FILES_CACHE)
-    if(EXISTS ${CMAKE_CURRENT_BINARY_DIR}/${TEST_TARBALL_FILE})
-      message(STATUS "Using existing cached test file ${CMAKE_CURRENT_BINARY_DIR}/${TEST_TARBALL_FILE} ...")
-    else()
-      message(STATUS "Copying in cached test file ${TEST_FILES_CACHE} ...")
-      file(COPY_FILE
-        ${TEST_FILES_CACHE}
-        ${CMAKE_CURRENT_BINARY_DIR}/${TEST_TARBALL_FILE}
-      )
-    endif()
+  elseif(EXISTS ${TEST_FILES_CACHE})
+    message(STATUS "Copying in cached test file ${TEST_FILES_CACHE} ...")
+    file(COPY_FILE
+      ${TEST_FILES_CACHE}
+      ${CMAKE_CURRENT_BINARY_DIR}/${TEST_TARBALL_FILE}
+    )
   else()
     file(DOWNLOAD
       ${TEST_TARBALL_URL}
