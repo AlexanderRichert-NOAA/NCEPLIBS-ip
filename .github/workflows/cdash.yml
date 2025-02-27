@@ -17,7 +17,7 @@ jobs:
 
     - name: Restore cached test files
       id: cache-restore
-      uses: actions/cache/restore@v4.1.2
+      uses: actions/cache/restore@v4.0.0
       with:
         path: ip-test-data-20241230.tgz
         key: NCEPLIBS-ip-test-files-1
@@ -35,7 +35,7 @@ jobs:
         extra-ctest-options: -LE SLOW_TEST -L NO_INPUT_DATA
 
     - name: Cache test files
-      uses: actions/cache/save@v4.1.2
+      uses: actions/cache/save@v4.0.0
       if: steps.cache-restore.outputs.cache-hit != 'true'
       with:
         path: ${{ github.workspace }}/coderoot/build/tests/ip-test-data-20241230.tgz
