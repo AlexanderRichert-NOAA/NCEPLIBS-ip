@@ -34,9 +34,14 @@ jobs:
         extra-apt-packages: libopenblas-serial-dev
         extra-ctest-options: -LE SLOW_TEST -L NO_INPUT_DATA -VV
 
+    - name: Copy file for caching
+      shell: bash
+      run: |
+        cp $GITHUB_WORKSPACE/coderoot/build/tests/ip-test-data-20241230.tgz $GITHUB_WORKSPACE/ip-test-data-20241230.tgz
+
     - name: Cache test files
       uses: actions/cache/save@v4
       if: steps.cache-restore.outputs.cache-hit != 'true'
       with:
-        path: ${{ github.workspace }}/coderoot/build/tests/ip-test-data-20241230.tgz
+        path: ip-test-data-20241230.tgz
         key: ${{ steps.cache-restore.outputs.cache-primary-key }}
