@@ -19,8 +19,9 @@ jobs:
 
     steps:
 
-    - name: Cache test files
-      uses: actions/cache@v4
+    - name: Restore cached test files
+      id: cache-restore
+      uses: actions/cache/restore@v4
       with:
         path: ip-test-data-20241230.tgz
         key: NCEPLIBS-ip-test-files-1
@@ -31,3 +32,10 @@ jobs:
         package-name: NCEPLIBS-ip
         extra-cmake-options: -DFTP_TEST_FILES=ON -DTEST_FILES_CACHE=${{ github.workspace }}/ip-test-data-20241230.tgz
         extra-apt-packages: libopenblas-serial-dev
+
+    - name: Cache test files
+      uses: actions/cache/save@v4
+      if: steps.cache-restore.outputs.cache-hit != 'true'
+      with:
+        path: ${{ github.workspace }}/ip-test-data-20241230.tgz
+        key: NCEPLIBS-ip-test-files-1
