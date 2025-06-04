@@ -29,10 +29,9 @@ jobs:
     steps:
 
     - name: "Code review"
-      uses: NOAA-EMC/ci-llm-code-review@develop
+      uses: NOAA-EMC/ci-llm-code-review@fancy_prompt
       with:
         backend: gemini-2.0
         api-key-variable: GEMINI_API_KEY
         provide-codebase: true
-        prompt-text: "Follow these instructions carefully. Review the following diff-formatted code modifications, inferring language from provided file names and/or code syntax. Structure the review as 'Summary of Changes,' 'Issues & Possible Errors' (including specific corrections, such as where and how to insert a missing variable declaration, or other changes that need to be propagated throughout the code), and 'Suggestions' with possible better approaches to those modifications if appropriate (do not suggest changes for parts of the code not related to those being modifed). Focus your review entirely on the modifications indicated by the + and - symbols representing new and removed lines. Do not review other parts of the code, which are provided only for context, such as to specifically identify other changes that are or may be needed elsewhere in the code based on the given diff-formatted modifications. Show exact code modifications wherever possible.\n"
         save-diff-files: true
