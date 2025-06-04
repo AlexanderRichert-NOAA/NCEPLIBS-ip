@@ -31,4 +31,6 @@ jobs:
     - name: "Code review"
       uses: NOAA-EMC/ci-llm-code-review@develop
       with:
-        api-key-variable: GH_API_KEY
+        backend: gemini-2.0
+        api-key-variable: GEMINI_API_KEY
+        provide-codebase: true
