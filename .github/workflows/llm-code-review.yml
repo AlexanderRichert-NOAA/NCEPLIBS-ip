@@ -34,3 +34,4 @@ jobs:
         backend: gemini-2.0
         api-key-variable: GEMINI_API_KEY
         provide-codebase: true
+        prompt-text: "Create a code review for the following file diff. Structure the review as 'Summary of Changes,' 'Issues & Possible Errors,' and 'Suggestions' with possible better approaches if appropriate. Focus your review on the new and removed lines indicated by + and - symbols, but using the provided codebase to determine context, including specifically identifying changes that are or may be needed elsewhere in the code. Show exact code modifications wherever possible.\n"
