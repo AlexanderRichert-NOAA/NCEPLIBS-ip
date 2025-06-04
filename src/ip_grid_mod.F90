@@ -21,7 +21,6 @@ module ip_grid_mod
   integer, public, parameter :: ROT_EQUID_CYLIND_B_GRID_ID_GRIB1 = 205 !< Integer grid number for rotated equidistant cylindrical B-stagger grid
 
   integer, public, parameter :: EQUID_CYLIND_GRID_ID_GRIB2 = 0 !< Integer grid number for equidistant cylindrical grid in grib2
-  integer, public, parameter :: ROT_EQUID_CYLIND_GRID_ID_GRIB2 = 1 !< Integer grid number for rotated equidistant cylindrical grid in grib2
   integer, public, parameter :: MERCATOR_GRID_ID_GRIB2 = 10 !< Integer grid number for Mercator grid in grib2
   integer, public, parameter :: POLAR_STEREO_GRID_ID_GRIB2 = 20 !< Integer grid number for polar stereo grid in grib2
   integer, public, parameter :: LAMBERT_CONF_GRID_ID_GRIB2 = 30 !< Integer grid number for Lambert conformal grid in grib2
