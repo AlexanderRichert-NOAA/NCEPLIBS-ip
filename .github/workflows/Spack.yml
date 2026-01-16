@@ -60,7 +60,6 @@ jobs:
         spack-compiler: gcc
         repo-cache-key-suffix: ${{ matrix.config.cache-key }}-1
         use-repo-cache: false
-        use-common-build-cache: false
 
   # This job validates the Spack recipe by making sure each cmake build option is represented
   recipe-check:
