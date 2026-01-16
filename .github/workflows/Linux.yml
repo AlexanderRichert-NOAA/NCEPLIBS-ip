@@ -24,11 +24,9 @@ jobs:
       matrix:
         openmp: [ ON, OFF ]
         options: [ -DBUILD_D=OFF, -DBUILD_4=OFF, -DBUILD_8=ON ]
-        gcc-version: [12]
         include:
           - openmp: ON
             options: -DBUILD_8=ON
-            gcc-version: 14
         
     steps:
 
@@ -39,7 +37,11 @@ jobs:
 
     - name: build
       run: |
-        export CC=gcc-${{ matrix.gcc-version }} ; export FC=gfortran-${{ matrix.gcc-version }}
+        cat /entrypoint.sh
+        . entrypoint.sh
+        echo $PATH
+        ls /opt/views/view/
+        ls /opt/views/view/bin
         cmake -S ip -B ip/build -DCMAKE_PREFIX_PATH="~/" -DOPENMP=${{ matrix.openmp }} ${{ matrix.options }} -DCMAKE_INSTALL_PREFIX=~/install -DBLA_VENDOR=OpenBLAS -DFTP_TEST_FILES=ON -DTEST_FILES_CACHE=$GITHUB_WORKSPACE/testfiles.tgz
         cmake --build ip/build --parallel 2 --verbose
         cmake --install ip/build
