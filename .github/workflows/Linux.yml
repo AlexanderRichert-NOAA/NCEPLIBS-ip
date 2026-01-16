@@ -38,7 +38,7 @@ jobs:
     - name: build
       run: |
         cat /entrypoint.sh
-        . entrypoint.sh
+        . /entrypoint.sh
         echo $PATH
         ls /opt/views/view/
         ls /opt/views/view/bin
