@@ -37,7 +37,6 @@ jobs:
 
     - name: build
       run: |
-        cat /entrypoint.sh
         . /entrypoint.sh
         echo $PATH
         ls /opt/views/view/
@@ -52,4 +51,6 @@ jobs:
         fi
     
     - name: test
-      run: ctest --test-dir ip/build --verbose --output-on-failure --rerun-failed
+      run: |
+        . /entrypoint.sh
+        ctest --test-dir ip/build --verbose --output-on-failure --rerun-failed
